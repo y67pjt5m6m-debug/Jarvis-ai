@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JARVIS</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: #05070a;
+    color: #00eaff;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.jarvis {
+    width: 100%;
+    max-width: 500px;
+    min-height: 100vh;
+    padding: 30px 20px;
+    text-align: center;
+}
+
+h1 {
+    font-size: 48px;
+    letter-spacing: 8px;
+    margin-top: 30px;
+}
+
+.status {
+    margin: 10px;
+    font-size: 14px;
+}
+
+.core {
+    width: 180px;
+    height: 180px;
+    margin: 50px auto 30px;
+    border: 3px solid #00eaff;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 30px #00eaff;
+    animation: pulse 2s infinite;
+}
+
+.core span {
+    font-size: 45px;
+}
+
+@keyframes pulse {
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 0 60px #00eaff;
+    }
+}
+
+#output {
+    min-height: 70px;
+    margin: 20px 0;
+    padding: 15px;
+    border: 1px solid #00eaff;
+    border-radius: 12px;
+}
+
+button {
+    background: transparent;
+    color: #00eaff;
+    border: 2px solid #00eaff;
+    border-radius: 30px;
+    padding: 15px 30px;
+    font-size: 18px;
+}
+
+button:active {
+    background: #00eaff;
+    color: #05070a;
+}
+
+.security {
+    margin-top: 30px;
+    font-size: 14px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="jarvis">
+
+    <h1>JARVIS</h1>
+
+    <div class="status">SYSTEM ONLINE</div>
+
+    <div class="core">
+        <span>◉</span>
+    </div>
+
+    <div id="output">
+        Good evening. I am JARVIS.
+    </div>
+
+    <button onclick="listen()">🎤 TALK TO JARVIS</button>
+
+    <div class="security">
+        🛡️ NETWORK SECURITY: ACTIVE
+    </div>
+
+</div>
+
+<script>
+
+function listen() {
+
+    if (!('webkitSpeechRecognition' in window)) {
+        document.getElementById("output").innerText =
+        "Voice recognition is not supported by this browser.";
+        return;
+    }
+
+    const recognition = new webkitSpeechRecognition();
+
+    recognition.lang = "en-GB";
+    recognition.start();
+
+    document.getElementById("output").innerText =
+    "Listening...";
+
+    recognition.onresult = function(event) {
+
+        const command =
+        event.results[0][0].transcript;
+
+        document.getElementById("output").innerText =
+        "You said: " + command;
+
+        speak("I heard you say " + command);
+    };
+}
+
+function speak(text) {
+
+    const voice =
+    new SpeechSynthesisUtterance(text);
+
+    voice.lang = "en-GB";
+
+    speechSynthesis.speak(voice);
+}
+
+</script>
+
+</body>
+</html>
